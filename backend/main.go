@@ -70,20 +70,20 @@ func main() {
 		},
 	}
 
-	for i := range users.User {
+	for _, u := range users.User {
 		client.User.
 			Create().
-			SetEmail(users.User[i].Email).
-			SetName(users.User[i].Name).
+			SetEmail(u.Email).
+			SetName(u.Name).
 			Save(context.Background())
 	}
 
 	// Set Resolutions Data
 	resolutions := []int{240, 360, 480, 720, 1080}
-	for i := range resolutions {
+	for _, r := range resolutions {
 		client.Resolution.
 			Create().
-			SetValue(resolutions[i]).
+			SetValue(r).
 			Save(context.Background())
 	}
 
@@ -96,11 +96,11 @@ func main() {
 		},
 	}
 
-	for i := range playlists.Playlist {
+	for _, p := range playlists.Playlist {
 
 		u, err := client.User.
 			Query().
-			Where(user.IDEQ(int(playlists.Playlist[i].Owner))).
+			Where(user.IDEQ(int(p.Owner))).
 			Only(context.Background())
 
 		if err != nil {
@@ -110,7 +110,7 @@ func main() {
 
 		client.Playlist.
 			Create().
-			SetTitle(playlists.Playlist[i].Title).
+			SetTitle(p.Title).
 			SetOwner(u).
 			Save(context.Background())
 	}
@@ -123,11 +123,11 @@ func main() {
 		},
 	}
 
-	for i := range videos.Video {
+	for _, v := range videos.Video {
 
 		u, err := client.User.
 			Query().
-			Where(user.IDEQ(int(videos.Video[i].Owner))).
+			Where(user.IDEQ(int(v.Owner))).
 			Only(context.Background())
 
 		if err != nil {
@@ -137,8 +137,8 @@ func main() {
 
 		client.Video.
 			Create().
-			SetName(videos.Video[i].Name).
-			SetURL(videos.Video[i].Url).
+			SetName(v.Name).
+			SetURL(v.Url).
 			SetOwner(u).
 			Save(context.Background())
 	}
