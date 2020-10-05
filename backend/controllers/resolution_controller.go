@@ -14,6 +14,17 @@ type ResolutionController struct {
 	router gin.IRouter
 }
 
+// CreateResolution handles POST requests for adding resolution entities
+// @Summary Create resolution
+// @Description Create resolution
+// @ID create-resolution
+// @Accept   json
+// @Produce  json
+// @Param resolution body ent.Resolution true "Resolution entity"
+// @Success 200 {object} ent.Resolution
+// @Failure 400 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /resolutions [post]
 func (ctl *ResolutionController) CreateResolution(c *gin.Context) {
 	obj := ent.Resolution{}
 	if err := c.ShouldBind(&obj); err != nil {
@@ -38,6 +49,17 @@ func (ctl *ResolutionController) CreateResolution(c *gin.Context) {
 	c.JSON(200, r)
 }
 
+// GetResolution handles GET requests to retrieve a resolution entity
+// @Summary Get a resolution entity by ID
+// @Description get resolution by ID
+// @ID get-resolution
+// @Produce  json
+// @Param id path int true "Resolution ID"
+// @Success 200 {object} ent.Resolution
+// @Failure 400 {object} gin.H
+// @Failure 404 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /resolutions/{id} [get]
 func (ctl *ResolutionController) GetResolution(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -61,6 +83,17 @@ func (ctl *ResolutionController) GetResolution(c *gin.Context) {
 	c.JSON(200, r)
 }
 
+// ListResolution handles request to get a list of resolution entities
+// @Summary List resolution entities
+// @Description list resolution entities
+// @ID list-resolution
+// @Produce json
+// @Param limit  query int false "Limit"
+// @Param offset query int false "Offset"
+// @Success 200 {array} ent.Resolution
+// @Failure 400 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /resolutions [get]
 func (ctl *ResolutionController) ListResolution(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -96,7 +129,7 @@ func (ctl *ResolutionController) ListResolution(c *gin.Context) {
 	c.JSON(200, resolutions)
 }
 
-// NewResolutionController creates and registers handles for the user controller
+// NewResolutionController creates and registers handles for the resolution controller
 func NewResolutionController(router gin.IRouter, client *ent.Client) *ResolutionController {
 	rc := &ResolutionController{
 		client: client,

@@ -21,6 +21,17 @@ type Playlist struct {
 	Owner int
 }
 
+// CreatePlaylist handles POST requests for adding playlist entities
+// @Summary Create playlist
+// @Description Create playlist
+// @ID create-playlist
+// @Accept   json
+// @Produce  json
+// @Param playlist body ent.Playlist true "Playlist entity"
+// @Success 200 {object} ent.Playlist
+// @Failure 400 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /playlists [post]
 func (ctl *PlaylistController) CreatePlaylist(c *gin.Context) {
 	obj := Playlist{}
 	if err := c.ShouldBind(&obj); err != nil {
@@ -60,6 +71,17 @@ func (ctl *PlaylistController) CreatePlaylist(c *gin.Context) {
 	c.JSON(200, p)
 }
 
+// GetPlaylist handles GET requests to retrieve a playlist entity
+// @Summary Get a playlist entity by ID
+// @Description get playlist by ID
+// @ID get-playlist
+// @Produce  json
+// @Param id path int true "Playlist ID"
+// @Success 200 {object} ent.Playlist
+// @Failure 400 {object} gin.H
+// @Failure 404 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /playlists/{id} [get]
 func (ctl *PlaylistController) GetPlaylist(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -84,6 +106,17 @@ func (ctl *PlaylistController) GetPlaylist(c *gin.Context) {
 	c.JSON(200, p)
 }
 
+// ListPlaylist handles request to get a list of playlist entities
+// @Summary List playlist entities
+// @Description list playlist entities
+// @ID list-playlist
+// @Produce json
+// @Param limit  query int false "Limit"
+// @Param offset query int false "Offset"
+// @Success 200 {array} ent.Playlist
+// @Failure 400 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /playlists [get]
 func (ctl *PlaylistController) ListPlaylist(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -120,7 +153,7 @@ func (ctl *PlaylistController) ListPlaylist(c *gin.Context) {
 	c.JSON(200, playlists)
 }
 
-// NewPlaylistController creates and registers handles for the user controller
+// NewPlaylistController creates and registers handles for the playlist controller
 func NewPlaylistController(router gin.IRouter, client *ent.Client) *PlaylistController {
 	pc := &PlaylistController{
 		client: client,

@@ -24,11 +24,22 @@ type PlaylistVideo struct {
 	Added      string
 }
 
+// CreatePlaylistVideo handles POST requests for adding playlist-video entities
+// @Summary Create playlist-video
+// @Description Create playlist-video
+// @ID create-playlist-video
+// @Accept   json
+// @Produce  json
+// @Param playlist-video body ent.Playlist_Video true "Playlist_Video entity"
+// @Success 200 {object} ent.Playlist_Video
+// @Failure 400 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /playlist-videos [post]
 func (ctl *PlaylistVideoController) CreatePlaylistVideo(c *gin.Context) {
 	obj := PlaylistVideo{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "playist video binding failed",
+			"error": "playlist video binding failed",
 		})
 		return
 	}
@@ -88,6 +99,17 @@ func (ctl *PlaylistVideoController) CreatePlaylistVideo(c *gin.Context) {
 	c.JSON(200, pv)
 }
 
+// ListPlaylistVideo handles request to get a list of playlist-video entities
+// @Summary List playlist-video entities
+// @Description list playlist-video entities
+// @ID list-playlist-video
+// @Produce json
+// @Param limit  query int false "Limit"
+// @Param offset query int false "Offset"
+// @Success 200 {array} ent.Playlist_Video
+// @Failure 400 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /playlist-videos [get]
 func (ctl *PlaylistVideoController) ListPlaylistVideo(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -126,7 +148,7 @@ func (ctl *PlaylistVideoController) ListPlaylistVideo(c *gin.Context) {
 	c.JSON(200, playlistVideos)
 }
 
-// NewPlaylistVideoController creates and registers handles for the user controller
+// NewPlaylistVideoController creates and registers handles for the playlist-video controller
 func NewPlaylistVideoController(router gin.IRouter, client *ent.Client) *PlaylistVideoController {
 	pvc := &PlaylistVideoController{
 		client: client,
