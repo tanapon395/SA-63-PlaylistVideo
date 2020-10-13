@@ -96,7 +96,10 @@ func (ctl *PlaylistVideoController) CreatePlaylistVideo(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, pv)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   pv,
+	})
 }
 
 // ListPlaylistVideo handles request to get a list of playlist-video entities

@@ -2,6 +2,8 @@ import React, { FC, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Content, Header, Page, pageTheme } from '@backstage/core';
 import SaveIcon from '@material-ui/icons/Save'; // icon save
+import Swal from 'sweetalert2'; // alert
+
 import {
   Container,
   Grid,
@@ -19,11 +21,12 @@ import { EntVideo } from '../../services/models/EntVideo'; // import interface V
 import { EntResolution } from '../../services/models/EntResolution'; // import interface Resolution
 import { EntPlaylist } from '../../services/models/EntPlaylist'; // import interface Playlist
 
+// header css
 const HeaderCustom = {
   minHeight: '50px',
 };
 
-// css style 
+// css style
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -52,19 +55,34 @@ interface watchVideo {
   video: number;
   resolution: number;
   added: Date;
-  create_by: number;
+  // create_by: number;
 }
 
 const WatchVideo: FC<{}> = () => {
   const classes = useStyles();
   const http = new DefaultApi();
 
-  const [playlist_video, setPlaylistVideo] = React.useState<Partial<watchVideo>>({});
+  const [playlist_video, setPlaylistVideo] = React.useState<
+    Partial<watchVideo>
+  >({});
 
   const [users, setUsers] = React.useState<EntUser[]>([]);
   const [videos, setVideos] = React.useState<EntVideo[]>([]);
   const [resolutions, setResolutions] = React.useState<EntResolution[]>([]);
   const [playlists, setPlaylists] = React.useState<EntPlaylist[]>([]);
+
+  // alert setting
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: toast => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
 
   const getUsers = async () => {
     const res = await http.listUser({ limit: 10, offset: 0 });
@@ -101,11 +119,42 @@ const WatchVideo: FC<{}> = () => {
     const name = event.target.name as keyof typeof WatchVideo;
     const { value } = event.target;
     setPlaylistVideo({ ...playlist_video, [name]: value });
+    console.log(playlist_video);
   };
+
+  // clear input form
+  function clear() {
+    setPlaylistVideo({});
+  }
 
   // function save data
   function save() {
-    console.log(playlist_video)
+    const apiUrl = 'http://localhost:8080/api/v1/playlist-videos';
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(playlist_video),
+    };
+
+    console.log(playlist_video); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+
+    fetch(apiUrl, requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.status === true) {
+          clear();
+          Toast.fire({
+            icon: 'success',
+            title: 'บันทึกข้อมูลสำเร็จ',
+          });
+        } else {
+          Toast.fire({
+            icon: 'error',
+            title: 'บันทึกข้อมูลไม่สำเร็จ',
+          });
+        }
+      });
   }
 
   return (
@@ -126,7 +175,7 @@ const WatchVideo: FC<{}> = () => {
                 <InputLabel>เลือกวีดีโอ</InputLabel>
                 <Select
                   name="video"
-                  value={playlist_video.video || ''}
+                  value={playlist_video.video || ''} // (undefined || '') = ''
                   onChange={handleChange}
                 >
                   {videos.map(item => {
@@ -148,7 +197,7 @@ const WatchVideo: FC<{}> = () => {
                 <InputLabel>เลือกเพลย์ลิสต์</InputLabel>
                 <Select
                   name="playlist"
-                  value={playlist_video.playlist || ''}
+                  value={playlist_video.playlist || ''} // (undefined || '') = ''
                   onChange={handleChange}
                 >
                   {playlists.map(item => {
@@ -170,7 +219,7 @@ const WatchVideo: FC<{}> = () => {
                 <InputLabel>เลือกความละเอียด</InputLabel>
                 <Select
                   name="resolution"
-                  value={playlist_video.resolution || ''}
+                  value={playlist_video.resolution || ''} // (undefined || '') = ''
                   onChange={handleChange}
                 >
                   {resolutions.map(item => {
@@ -191,8 +240,8 @@ const WatchVideo: FC<{}> = () => {
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>เลือกสมาชิกระบบ</InputLabel>
                 <Select
-                  value={playlist_video.create_by || ''}
-                  onChange={handleChange}
+                  // value={playlist_video.create_by || ''} // (undefined || '') = ''
+                  // onChange={handleChange}
                   name="create_by"
                 >
                   {users.map(item => {
@@ -205,6 +254,7 @@ const WatchVideo: FC<{}> = () => {
                 </Select>
               </FormControl>
             </Grid>
+
             <Grid item xs={3}>
               <div className={classes.paper}>เวลา</div>
             </Grid>
@@ -213,8 +263,8 @@ const WatchVideo: FC<{}> = () => {
                 <TextField
                   label="เลือกเวลา"
                   name="added"
-                  type="datetime-local"
-                  value={playlist_video.added}
+                  type="date"
+                  value={playlist_video.added || ''} // (undefined || '') = ''
                   className={classes.textField}
                   InputLabelProps={{
                     shrink: true,
