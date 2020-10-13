@@ -1,104 +1,74 @@
 import React, { FC } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import {
-  Typography,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Link,
-} from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import {
   Content,
-  InfoCard,
   Header,
   Page,
   pageTheme,
   ContentHeader,
-  SupportButton,
 } from '@backstage/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 
 const HeaderCustom = {
-  minHeight: '100px',
+  minHeight: '50px',
 };
 
-const WelcomePage: FC<{}> = () => {
-  const profile = { givenName: '' };
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+  },
+});
 
+export type ProfileProps = {
+  name: string; 
+  id: string;
+  system: string;
+};
+
+export function CardTeam({ name, id, system }: ProfileProps) {
+  const classes = useStyles();
+  return (
+    <Grid item xs={12} md={3}>
+      <Card className={classes.root}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt="นาย สมชาย ใจดี"
+            height="140"
+            image="../../image/account.jpg"
+            title="นาย สมชาย ใจดี"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {system}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              {id} {name}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Grid>
+  );
+}
+
+const WelcomePage: FC<{}> = () => {
   return (
     <Page theme={pageTheme.home}>
-      <Header
-        style={HeaderCustom}
-        title={`Welcome ${profile.givenName || 'to Backstage'}`}
-        subtitle="Some quick intro and links."
-      ></Header>
+      <Header style={HeaderCustom} title={`ระบบ...`}></Header>
       <Content>
-        <ContentHeader title="Getting Started">
-          <SupportButton />
-        </ContentHeader>
+        <ContentHeader title="สมาชิกในกลุ่ม"></ContentHeader>
         <Grid container>
-          <Grid item xs={12} md={6}>
-            <InfoCard>
-              <Typography variant="body1" gutterBottom>
-                You now have a running instance of Backstage!
-                <span role="img" aria-label="confetti">
-                  🎉
-                </span>
-                Let's make sure you get the most out of this platform by walking
-                you through the basics.
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                The Setup
-              </Typography>
-              <Typography variant="body1" paragraph>
-                Backstage is put together from three base concepts: the core,
-                the app and the plugins.
-              </Typography>
-              <List>
-                <ListItem>
-                  <ListItemText primary="The core is responsible for base functionality." />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="The app provides the base UI and connects the plugins." />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="The plugins make Backstage useful for the end users with
-                  specific views and functionality."
-                  />
-                </ListItem>
-              </List>
-              <Typography variant="h6" gutterBottom>
-                Try It Out
-              </Typography>
-              <Typography variant="body1" paragraph>
-                We suggest you either check out the documentation for{' '}
-                <Link href="https://github.com/spotify/backstage/blob/master/docs/getting-started/create-a-plugin.md">
-                  creating a plugin
-                </Link>{' '}
-                or have a look in the code for the{' '}
-                <Link component={RouterLink} to="/home">
-                  Home Page
-                </Link>{' '}
-                in the directory "plugins/home-page/src".
-              </Typography>
-            </InfoCard>
-          </Grid>
-          <Grid item>
-            <InfoCard>
-              <Typography variant="h5">Quick Links</Typography>
-              <List>
-                <ListItem>
-                  <Link href="https://backstage.io">backstage.io</Link>
-                </ListItem>
-                <ListItem>
-                  <Link href="https://github.com/spotify/backstage/blob/master/docs/getting-started/create-a-plugin.md">
-                    Create a plugin
-                  </Link>
-                </ListItem>
-              </List>
-            </InfoCard>
-          </Grid>
+          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
         </Grid>
       </Content>
     </Page>
