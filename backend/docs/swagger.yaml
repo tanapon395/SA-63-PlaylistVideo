@@ -82,6 +82,9 @@ definitions:
     type: object
   ent.User:
     properties:
+      age:
+        description: Age holds the value of the "age" field.
+        type: integer
       edges:
         $ref: '#/definitions/ent.UserEdges'
         description: |-
@@ -94,8 +97,14 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
+      identification_number:
+        description: IdentificationNumber holds the value of the "identification_number" field.
+        type: string
       name:
         description: Name holds the value of the "name" field.
+        type: string
+      student_id:
+        description: StudentID holds the value of the "student_id" field.
         type: string
     type: object
   ent.UserEdges:

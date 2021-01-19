@@ -20,8 +20,11 @@ type Users struct {
 }
 
 type User struct {
-	Name  string
-	Email string
+	Name                 string
+	StudentId            string
+	Email                string
+	IdentificationNumber string
+	Age                  int
 }
 
 type Playlists struct {
@@ -108,8 +111,8 @@ func main() {
 	// Set Users Data
 	users := Users{
 		User: []User{
-			User{"Chanwit Kaewkasi", "chanwit@gmail.com"},
-			User{"Name Surname", "me@example.com"},
+			User{"Chanwit Kaewkasi", "B5703234", "chanwit@gmail.com", "1234567890987", 12},
+			User{"Name Surname", "B5703234", "me@example.com", "1234562890987", 10},
 		},
 	}
 
@@ -117,7 +120,10 @@ func main() {
 		client.User.
 			Create().
 			SetEmail(u.Email).
+			SetStudentID(u.StudentId).
 			SetName(u.Name).
+			SetIdentificationNumber(u.IdentificationNumber).
+			SetAge(u.Age).
 			Save(context.Background())
 	}
 

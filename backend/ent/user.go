@@ -15,10 +15,16 @@ type User struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// StudentID holds the value of the "student_id" field.
+	StudentID string `json:"student_id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// IdentificationNumber holds the value of the "identification_number" field.
+	IdentificationNumber string `json:"identification_number,omitempty"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
+	// Age holds the value of the "age" field.
+	Age int `json:"age,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges UserEdges `json:"edges"`
@@ -57,8 +63,11 @@ func (e UserEdges) VideosOrErr() ([]*Video, error) {
 func (*User) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
+		&sql.NullString{}, // student_id
 		&sql.NullString{}, // name
+		&sql.NullString{}, // identification_number
 		&sql.NullString{}, // email
+		&sql.NullInt64{},  // age
 	}
 }
 
@@ -75,14 +84,29 @@ func (u *User) assignValues(values ...interface{}) error {
 	u.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field name", values[0])
+		return fmt.Errorf("unexpected type %T for field student_id", values[0])
+	} else if value.Valid {
+		u.StudentID = value.String
+	}
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field name", values[1])
 	} else if value.Valid {
 		u.Name = value.String
 	}
-	if value, ok := values[1].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field email", values[1])
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field identification_number", values[2])
+	} else if value.Valid {
+		u.IdentificationNumber = value.String
+	}
+	if value, ok := values[3].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field email", values[3])
 	} else if value.Valid {
 		u.Email = value.String
+	}
+	if value, ok := values[4].(*sql.NullInt64); !ok {
+		return fmt.Errorf("unexpected type %T for field age", values[4])
+	} else if value.Valid {
+		u.Age = int(value.Int64)
 	}
 	return nil
 }
@@ -120,10 +144,16 @@ func (u *User) String() string {
 	var builder strings.Builder
 	builder.WriteString("User(")
 	builder.WriteString(fmt.Sprintf("id=%v", u.ID))
+	builder.WriteString(", student_id=")
+	builder.WriteString(u.StudentID)
 	builder.WriteString(", name=")
 	builder.WriteString(u.Name)
+	builder.WriteString(", identification_number=")
+	builder.WriteString(u.IdentificationNumber)
 	builder.WriteString(", email=")
 	builder.WriteString(u.Email)
+	builder.WriteString(", age=")
+	builder.WriteString(fmt.Sprintf("%v", u.Age))
 	builder.WriteByte(')')
 	return builder.String()
 }

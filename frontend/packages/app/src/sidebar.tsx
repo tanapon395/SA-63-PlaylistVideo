@@ -32,6 +32,11 @@ export const AppSidebar = () => (
       to="watch_video"
       text="Watch Video"
     />
+    <SidebarItem
+      icon={CreateComponentIcon}
+      to="user"
+      text="User"
+    />
 
     {/* End global nav */}
     <SidebarDivider />

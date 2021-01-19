@@ -28,14 +28,40 @@ func init() {
 	resolution.ValueValidator = resolutionDescValue.Validators[0].(func(int) error)
 	userFields := schema.User{}.Fields()
 	_ = userFields
+	// userDescStudentID is the schema descriptor for student_id field.
+	userDescStudentID := userFields[0].Descriptor()
+	// user.StudentIDValidator is a validator for the "student_id" field. It is called by the builders before save.
+	user.StudentIDValidator = userDescStudentID.Validators[0].(func(string) error)
 	// userDescName is the schema descriptor for name field.
-	userDescName := userFields[0].Descriptor()
+	userDescName := userFields[1].Descriptor()
 	// user.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	user.NameValidator = userDescName.Validators[0].(func(string) error)
+	// userDescIdentificationNumber is the schema descriptor for identification_number field.
+	userDescIdentificationNumber := userFields[2].Descriptor()
+	// user.IdentificationNumberValidator is a validator for the "identification_number" field. It is called by the builders before save.
+	user.IdentificationNumberValidator = func() func(string) error {
+		validators := userDescIdentificationNumber.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(identification_number string) error {
+			for _, fn := range fns {
+				if err := fn(identification_number); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[1].Descriptor()
+	userDescEmail := userFields[3].Descriptor()
 	// user.EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	user.EmailValidator = userDescEmail.Validators[0].(func(string) error)
+	// userDescAge is the schema descriptor for age field.
+	userDescAge := userFields[4].Descriptor()
+	// user.AgeValidator is a validator for the "age" field. It is called by the builders before save.
+	user.AgeValidator = userDescAge.Validators[0].(func(int) error)
 	videoFields := schema.Video{}.Fields()
 	_ = videoFields
 	// videoDescName is the schema descriptor for name field.

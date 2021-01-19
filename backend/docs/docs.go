@@ -950,6 +950,10 @@ var doc = `{
         "ent.User": {
             "type": "object",
             "properties": {
+                "age": {
+                    "description": "Age holds the value of the \"age\" field.",
+                    "type": "integer"
+                },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the UserQuery when eager-loading is set.",
                     "type": "object",
@@ -963,8 +967,16 @@ var doc = `{
                     "description": "ID of the ent.",
                     "type": "integer"
                 },
+                "identification_number": {
+                    "description": "IdentificationNumber holds the value of the \"identification_number\" field.",
+                    "type": "string"
+                },
                 "name": {
                     "description": "Name holds the value of the \"name\" field.",
+                    "type": "string"
+                },
+                "student_id": {
+                    "description": "StudentID holds the value of the \"student_id\" field.",
                     "type": "string"
                 }
             }

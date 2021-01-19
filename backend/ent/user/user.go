@@ -7,10 +7,16 @@ const (
 	Label = "user"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldStudentID holds the string denoting the student_id field in the database.
+	FieldStudentID = "student_id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldIdentificationNumber holds the string denoting the identification_number field in the database.
+	FieldIdentificationNumber = "identification_number"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
+	// FieldAge holds the string denoting the age field in the database.
+	FieldAge = "age"
 
 	// EdgePlaylists holds the string denoting the playlists edge name in mutations.
 	EdgePlaylists = "playlists"
@@ -38,13 +44,22 @@ const (
 // Columns holds all SQL columns for user fields.
 var Columns = []string{
 	FieldID,
+	FieldStudentID,
 	FieldName,
+	FieldIdentificationNumber,
 	FieldEmail,
+	FieldAge,
 }
 
 var (
+	// StudentIDValidator is a validator for the "student_id" field. It is called by the builders before save.
+	StudentIDValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
+	// IdentificationNumberValidator is a validator for the "identification_number" field. It is called by the builders before save.
+	IdentificationNumberValidator func(string) error
 	// EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	EmailValidator func(string) error
+	// AgeValidator is a validator for the "age" field. It is called by the builders before save.
+	AgeValidator func(int) error
 )

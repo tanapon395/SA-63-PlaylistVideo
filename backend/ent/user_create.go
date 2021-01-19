@@ -21,15 +21,33 @@ type UserCreate struct {
 	hooks    []Hook
 }
 
+// SetStudentID sets the student_id field.
+func (uc *UserCreate) SetStudentID(s string) *UserCreate {
+	uc.mutation.SetStudentID(s)
+	return uc
+}
+
 // SetName sets the name field.
 func (uc *UserCreate) SetName(s string) *UserCreate {
 	uc.mutation.SetName(s)
 	return uc
 }
 
+// SetIdentificationNumber sets the identification_number field.
+func (uc *UserCreate) SetIdentificationNumber(s string) *UserCreate {
+	uc.mutation.SetIdentificationNumber(s)
+	return uc
+}
+
 // SetEmail sets the email field.
 func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	uc.mutation.SetEmail(s)
+	return uc
+}
+
+// SetAge sets the age field.
+func (uc *UserCreate) SetAge(i int) *UserCreate {
+	uc.mutation.SetAge(i)
 	return uc
 }
 
@@ -110,6 +128,14 @@ func (uc *UserCreate) SaveX(ctx context.Context) *User {
 }
 
 func (uc *UserCreate) preSave() error {
+	if _, ok := uc.mutation.StudentID(); !ok {
+		return &ValidationError{Name: "student_id", err: errors.New("ent: missing required field \"student_id\"")}
+	}
+	if v, ok := uc.mutation.StudentID(); ok {
+		if err := user.StudentIDValidator(v); err != nil {
+			return &ValidationError{Name: "student_id", err: fmt.Errorf("ent: validator failed for field \"student_id\": %w", err)}
+		}
+	}
 	if _, ok := uc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New("ent: missing required field \"name\"")}
 	}
@@ -118,12 +144,28 @@ func (uc *UserCreate) preSave() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
+	if _, ok := uc.mutation.IdentificationNumber(); !ok {
+		return &ValidationError{Name: "identification_number", err: errors.New("ent: missing required field \"identification_number\"")}
+	}
+	if v, ok := uc.mutation.IdentificationNumber(); ok {
+		if err := user.IdentificationNumberValidator(v); err != nil {
+			return &ValidationError{Name: "identification_number", err: fmt.Errorf("ent: validator failed for field \"identification_number\": %w", err)}
+		}
+	}
 	if _, ok := uc.mutation.Email(); !ok {
 		return &ValidationError{Name: "email", err: errors.New("ent: missing required field \"email\"")}
 	}
 	if v, ok := uc.mutation.Email(); ok {
 		if err := user.EmailValidator(v); err != nil {
 			return &ValidationError{Name: "email", err: fmt.Errorf("ent: validator failed for field \"email\": %w", err)}
+		}
+	}
+	if _, ok := uc.mutation.Age(); !ok {
+		return &ValidationError{Name: "age", err: errors.New("ent: missing required field \"age\"")}
+	}
+	if v, ok := uc.mutation.Age(); ok {
+		if err := user.AgeValidator(v); err != nil {
+			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
 		}
 	}
 	return nil
@@ -153,6 +195,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := uc.mutation.StudentID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldStudentID,
+		})
+		u.StudentID = value
+	}
 	if value, ok := uc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -161,6 +211,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		})
 		u.Name = value
 	}
+	if value, ok := uc.mutation.IdentificationNumber(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldIdentificationNumber,
+		})
+		u.IdentificationNumber = value
+	}
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -168,6 +226,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Column: user.FieldEmail,
 		})
 		u.Email = value
+	}
+	if value, ok := uc.mutation.Age(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: user.FieldAge,
+		})
+		u.Age = value
 	}
 	if nodes := uc.mutation.PlaylistsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    textAlign: 'right'
   },
   formControl: {
     width: 300,
@@ -62,9 +63,7 @@ const WatchVideo: FC<{}> = () => {
   const classes = useStyles();
   const http = new DefaultApi();
 
-  const [playlist_video, setPlaylistVideo] = React.useState<
-    Partial<watchVideo>
-  >({});
+  const [playlist_video, setPlaylistVideo] = React.useState<Partial<watchVideo>>({});
 
   const [users, setUsers] = React.useState<EntUser[]>([]);
   const [videos, setVideos] = React.useState<EntVideo[]>([]);
@@ -113,9 +112,7 @@ const WatchVideo: FC<{}> = () => {
   }, []);
 
   // set data to object playlist_video
-  const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-  ) => {
+  const handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
     const name = event.target.name as keyof typeof WatchVideo;
     const { value } = event.target;
     setPlaylistVideo({ ...playlist_video, [name]: value });
@@ -164,7 +161,7 @@ const WatchVideo: FC<{}> = () => {
         <div style={{ marginLeft: 10 }}>Tanapon Kongjaroensuk</div>
       </Header>
       <Content>
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <Grid container spacing={3}>
             <Grid item xs={12}></Grid>
             <Grid item xs={3}>
@@ -175,6 +172,7 @@ const WatchVideo: FC<{}> = () => {
                 <InputLabel>เลือกวีดีโอ</InputLabel>
                 <Select
                   name="video"
+                  id="video"
                   value={playlist_video.video || ''} // (undefined || '') = ''
                   onChange={handleChange}
                 >
@@ -197,6 +195,7 @@ const WatchVideo: FC<{}> = () => {
                 <InputLabel>เลือกเพลย์ลิสต์</InputLabel>
                 <Select
                   name="playlist"
+                  id="playlist"
                   value={playlist_video.playlist || ''} // (undefined || '') = ''
                   onChange={handleChange}
                 >
@@ -219,6 +218,7 @@ const WatchVideo: FC<{}> = () => {
                 <InputLabel>เลือกความละเอียด</InputLabel>
                 <Select
                   name="resolution"
+                  id="resolution"
                   value={playlist_video.resolution || ''} // (undefined || '') = ''
                   onChange={handleChange}
                 >
@@ -243,6 +243,7 @@ const WatchVideo: FC<{}> = () => {
                   // value={playlist_video.create_by || ''} // (undefined || '') = ''
                   // onChange={handleChange}
                   name="create_by"
+                  id="create_by"
                 >
                   {users.map(item => {
                     return (

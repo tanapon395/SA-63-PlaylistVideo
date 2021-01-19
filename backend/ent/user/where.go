@@ -91,6 +91,13 @@ func IDLTE(id int) predicate.User {
 	})
 }
 
+// StudentID applies equality check predicate on the "student_id" field. It's identical to StudentIDEQ.
+func StudentID(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldStudentID), v))
+	})
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -98,10 +105,135 @@ func Name(v string) predicate.User {
 	})
 }
 
+// IdentificationNumber applies equality check predicate on the "identification_number" field. It's identical to IdentificationNumberEQ.
+func IdentificationNumber(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdentificationNumber), v))
+	})
+}
+
 // Email applies equality check predicate on the "email" field. It's identical to EmailEQ.
 func Email(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldEmail), v))
+	})
+}
+
+// Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
+func Age(v int) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAge), v))
+	})
+}
+
+// StudentIDEQ applies the EQ predicate on the "student_id" field.
+func StudentIDEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDNEQ applies the NEQ predicate on the "student_id" field.
+func StudentIDNEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDIn applies the In predicate on the "student_id" field.
+func StudentIDIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldStudentID), v...))
+	})
+}
+
+// StudentIDNotIn applies the NotIn predicate on the "student_id" field.
+func StudentIDNotIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldStudentID), v...))
+	})
+}
+
+// StudentIDGT applies the GT predicate on the "student_id" field.
+func StudentIDGT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDGTE applies the GTE predicate on the "student_id" field.
+func StudentIDGTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDLT applies the LT predicate on the "student_id" field.
+func StudentIDLT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDLTE applies the LTE predicate on the "student_id" field.
+func StudentIDLTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDContains applies the Contains predicate on the "student_id" field.
+func StudentIDContains(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDHasPrefix applies the HasPrefix predicate on the "student_id" field.
+func StudentIDHasPrefix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDHasSuffix applies the HasSuffix predicate on the "student_id" field.
+func StudentIDHasSuffix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDEqualFold applies the EqualFold predicate on the "student_id" field.
+func StudentIDEqualFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldStudentID), v))
+	})
+}
+
+// StudentIDContainsFold applies the ContainsFold predicate on the "student_id" field.
+func StudentIDContainsFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldStudentID), v))
 	})
 }
 
@@ -216,6 +348,117 @@ func NameContainsFold(v string) predicate.User {
 	})
 }
 
+// IdentificationNumberEQ applies the EQ predicate on the "identification_number" field.
+func IdentificationNumberEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberNEQ applies the NEQ predicate on the "identification_number" field.
+func IdentificationNumberNEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberIn applies the In predicate on the "identification_number" field.
+func IdentificationNumberIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldIdentificationNumber), v...))
+	})
+}
+
+// IdentificationNumberNotIn applies the NotIn predicate on the "identification_number" field.
+func IdentificationNumberNotIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldIdentificationNumber), v...))
+	})
+}
+
+// IdentificationNumberGT applies the GT predicate on the "identification_number" field.
+func IdentificationNumberGT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberGTE applies the GTE predicate on the "identification_number" field.
+func IdentificationNumberGTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberLT applies the LT predicate on the "identification_number" field.
+func IdentificationNumberLT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberLTE applies the LTE predicate on the "identification_number" field.
+func IdentificationNumberLTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberContains applies the Contains predicate on the "identification_number" field.
+func IdentificationNumberContains(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberHasPrefix applies the HasPrefix predicate on the "identification_number" field.
+func IdentificationNumberHasPrefix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberHasSuffix applies the HasSuffix predicate on the "identification_number" field.
+func IdentificationNumberHasSuffix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberEqualFold applies the EqualFold predicate on the "identification_number" field.
+func IdentificationNumberEqualFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldIdentificationNumber), v))
+	})
+}
+
+// IdentificationNumberContainsFold applies the ContainsFold predicate on the "identification_number" field.
+func IdentificationNumberContainsFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldIdentificationNumber), v))
+	})
+}
+
 // EmailEQ applies the EQ predicate on the "email" field.
 func EmailEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -324,6 +567,82 @@ func EmailEqualFold(v string) predicate.User {
 func EmailContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldEmail), v))
+	})
+}
+
+// AgeEQ applies the EQ predicate on the "age" field.
+func AgeEQ(v int) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAge), v))
+	})
+}
+
+// AgeNEQ applies the NEQ predicate on the "age" field.
+func AgeNEQ(v int) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAge), v))
+	})
+}
+
+// AgeIn applies the In predicate on the "age" field.
+func AgeIn(vs ...int) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAge), v...))
+	})
+}
+
+// AgeNotIn applies the NotIn predicate on the "age" field.
+func AgeNotIn(vs ...int) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAge), v...))
+	})
+}
+
+// AgeGT applies the GT predicate on the "age" field.
+func AgeGT(v int) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAge), v))
+	})
+}
+
+// AgeGTE applies the GTE predicate on the "age" field.
+func AgeGTE(v int) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAge), v))
+	})
+}
+
+// AgeLT applies the LT predicate on the "age" field.
+func AgeLT(v int) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAge), v))
+	})
+}
+
+// AgeLTE applies the LTE predicate on the "age" field.
+func AgeLTE(v int) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAge), v))
 	})
 }
 

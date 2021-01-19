@@ -41,16 +41,24 @@ func (ctl *UserController) CreateUser(c *gin.Context) {
 		Create().
 		SetEmail(obj.Email).
 		SetName(obj.Name).
+		SetStudentID(obj.StudentID).
+		SetIdentificationNumber(obj.IdentificationNumber).
+		SetAge(obj.Age).
 		Save(context.Background())
 
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
 
-	c.JSON(200, u)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   u,
+	})
 }
 
 // GetUser handles GET requests to retrieve a user entity
